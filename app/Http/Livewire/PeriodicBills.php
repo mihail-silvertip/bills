@@ -49,7 +49,7 @@ class PeriodicBills extends BaseComponent {
         'end_date' => [
             'type' => 'text',
             'value' => '',
-            'rules' => 'required|date',
+            'rules' => 'date',
             'label' => 'End Date',
         ],
         'observation' => [

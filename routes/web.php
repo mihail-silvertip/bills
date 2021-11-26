@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Livewire\PeriodicBills;
+use App\Http\Livewire\Bills;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,7 @@ Route::get('/', function () {
 // route middleware
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/periodic-bills', PeriodicBills::class);
+    Route::get('/bills', Bills::class);
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

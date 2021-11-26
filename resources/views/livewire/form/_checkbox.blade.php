@@ -1,0 +1,1 @@
+<input type="checkbox" wire:model="fields.{{$field}}.value">

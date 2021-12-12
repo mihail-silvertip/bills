@@ -1,22 +1,65 @@
 <tbody>
     @foreach($collection as $item)
+    <?php
+    if (isset($balance)) {
+        //add subtotal when date changes
+        if(empty($date) || $item->due_date->toDateString() != $date){
+            if (!empty($date)) {
+                $show_balance = true;
+            }
+            
+            $changed_balance = 0;
+            if (!empty($balances[$date])) {
+                $changed_balance = $balance;
+                $balance = $balances[$date];
+            }
+
+            $date = $item->due_date->toDateString();
+            $subtotal = 0;
+    
+        } else {
+            $show_balance = false;
+        }
+        
+        ?>
+    @if(!empty($show_balance))
+        @include('livewire.core._balance_footer')
+    @endif
+    <?php
+        $subtotal += $item->amount;
+        $balance += $item->amount;
+    }
+    ?>
+            
     <tr>
         @foreach($fields as $field => $fieldData)
-            <td class="border px-4 py-2">{{$item->$field}}</td>
+            @if(isset($fieldData['table_visible']) && $fieldData['table_visible'] == false)
+                @continue
+            @endif
+            @if(!empty($fieldData['type']) && $fieldData['type'] == 'date' && !empty($item->$field))
+            <td class="border px-4 py-2">@if(!empty($item->$field)) {{ (new \Carbon\Carbon($item->$field))->format('d-m-Y')}} @endif</td>
+            
+            @elseif(!empty($fieldData['type']) && $fieldData['type'] == 'day' && !empty($item->$field))
+            <td class="border px-4 py-2 text-center">@if(!empty($item->$field)) {{ (new \Carbon\Carbon($item->$field))->format('d')}} @endif</td>
+            
+            @elseif(!empty($fieldData['type']) && $fieldData['type'] == 'currency' && !empty($item->$field))
+            <td class="border px-4 py-2 text-right @if($item->$field > 0) text-blue-500 @else text-red-400 @endif">$ {{ number_format($item->$field, 2, ',', '.') }}</td>
+            
+            @elseif(!empty($fieldData['type']) && $fieldData['type'] == 'view')
+            <td class="border px-4 py-2 text-center">@include($fieldData['view'])</td>
+
+            @else
+                <td class="border px-4 py-2">{{$item->$field}}</td>
+            @endif
             
         @endforeach
-        @foreach($table['fields'] as $field => $fieldData)
-            @if($fieldData['type'] == 'checkbox')
-                <td class="border px-4 py-2"> @include('livewire.form._checkbox')</td>
-            @endif
-        
-    @endforeach
+
         <td class="border px-4 py-2">
-            <button wire:click="edit({{ $item->id }})"
-                class="flex px-4 py-2 bg-gray-500 text-gray-900 cursor-pointer w-1/2">Edit</button>
-            <button wire:click="delete({{ $item->id }})"
-                class="flex px-4 py-2 bg-red-100 text-gray-900 cursor-pointer w-1/2">Delete</button>
+            @include('livewire.core._table_buttons')
+           
         </td>
     </tr>
     @endforeach
+
+    @include('livewire.core._balance_footer')
 </tbody>

@@ -20,8 +20,8 @@ Route::get('/', function () {
 });
 // route middleware
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
-    Route::get('/periodic-bills', PeriodicBills::class);
-    Route::get('/bills', Bills::class);
+    Route::get('/periodic-bills', PeriodicBills::class)->name('periodic-bills');
+    Route::get('/bills', Bills::class)->name('bills');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {

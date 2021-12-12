@@ -34,7 +34,7 @@ class BaseComponent extends Component
     private function resetCreateForm(){
         // clear value of all fields
         foreach ($this->fields as $field => $value) {
-            $this->fields[$field]['value'] = '';
+            $this->$field = '';
         }
         $this->data = [];
         $this->modelId = 0;
@@ -55,8 +55,8 @@ class BaseComponent extends Component
         // get rules from this->fields
         $rules = [];
         foreach ($this->fields as $field => $value) {
-            $rules['fields.' . $field . '.value'] = $value['rules'];
-            $this->data[$field] = $value['value'];
+            $rules[$field] = $value['rules'] ?? '';
+            $this->data[$field] = $this->$field;
         }
 
         $this->validate($rules);
@@ -66,10 +66,10 @@ class BaseComponent extends Component
     {
         $model = $this->model::findOrFail($id)->toArray();
         $this->modelId = $model['id'];
-        // add all the values from periodicBills to fields
+        // add all the values from model to fields
         foreach ($model as $field => $value) {
             if (isset($this->fields[$field])) {
-                $this->fields[$field]['value'] = $value;
+                $this->$field = $value;
             }
         }
         $this->openModalPopover();

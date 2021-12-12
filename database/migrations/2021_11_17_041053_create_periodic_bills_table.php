@@ -21,17 +21,18 @@ class CreatePeriodicBillsTable extends Migration
             // day field
             $table->integer('day');
             // category field
-            $table->string('category');
+            $table->string('category')->nullable();
             //description field
             $table->string('description');
             //amount field
             $table->decimal('amount', 10, 2);
             // end date field
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             // payment method field
-            $table->string('payment_method');
+            $table->string('payment_method')->nullable();
             // observation field
             $table->string('observation')->nullable();
+            $table->boolean('amount_variable')->default(false);
             $table->timestamps();
         });
     }

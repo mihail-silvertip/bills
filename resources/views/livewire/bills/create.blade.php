@@ -9,11 +9,14 @@
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="">
                         @foreach($fields as $field => $fieldData)
-                        <div class="mb-4">
-                            <label for="exampleFormControl{{$field}}"
-                                class="block text-gray-700 text-sm font-bold mb-2">{{__($fieldData['label'])}}:</label>
-                                    @include('livewire.form._' . $fieldData['type'])
-                        </div>
+                            @if(isset($fieldData['edit']) && !$fieldData['edit'])
+                                @continue
+                            @endif
+                            <div class="mb-4">
+                                <label for="exampleFormControl{{$field}}"
+                                    class="block text-gray-700 text-sm font-bold mb-2">{{__($fieldData['label'])}}:</label>
+                                        @include('livewire.form._' . $fieldData['type'])
+                            </div>
                         @endforeach
                                               
                     </div>

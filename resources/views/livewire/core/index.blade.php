@@ -5,9 +5,16 @@
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
             @include('livewire.core._message')
 
-            @foreach($buttons as $button)
-                @include('livewire.' . $button['view'], $button['data'] ?? [])
-            @endforeach
+            <div class="flex flex-row justify-between">
+                <div>
+                    // filter
+                </div>
+                <div>
+                    @foreach($buttons as $button)
+                        @include('livewire.' . $button['view'], $button['data'] ?? [])
+                    @endforeach
+                </div>
+            </div>
 
             @if($isModalOpen)
                 @include($viewPath . '.create')

@@ -42,7 +42,7 @@ class Bills extends BaseComponent
                 'rules' => 'required',
                 'label' => 'Payment Method',
             ],
-            'observation' => [ 'type' => 'textarea', 'label' => 'Observation'],
+            'observation' => [ 'type' => 'textarea', 'label' => 'Observation', 'class' => 'sm:hidden'],
             'paid_date' => ['label' => 'Paid', 'type' => 'view', 'edit' => false, 'view' => 'livewire.bills._button_pay'],
         ];
 

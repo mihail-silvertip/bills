@@ -20,7 +20,7 @@
                 @include($viewPath . '.create')
             @endif
 
-            <table class="table-fixed w-full">
+            <table class="w-full">
                 @include('livewire.core._table_header')
                 @include('livewire.core._table_body')
             </table>

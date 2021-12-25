@@ -4,4 +4,4 @@
     <option value="{{$option}}">{{__($option)}}</option>
     @endforeach
 </select>
-@error('fields.' . $field) <span class="text-red-500">{{ $message }}</span>@enderror
+@error($field) <span class="text-red-500">{{ $message }}</span>@enderror

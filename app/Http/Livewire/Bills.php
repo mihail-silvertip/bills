@@ -24,6 +24,10 @@ class Bills extends BaseComponent
 
     public $fields = [];
 
+    public $base = '';
+
+    protected $queryString = ['base'];
+
     public function render()
     {
         $this->fields = [
@@ -47,7 +51,10 @@ class Bills extends BaseComponent
             'paid_date' => ['label' => 'Paid', 'type' => 'view', 'edit' => false, 'view' => 'livewire.bills._button_pay'],
         ];
 
-        $this->base = request('base', Carbon::now()->format('Y-m'));
+        if (empty($this->base)) {
+            $this->base = Carbon::now()->format('Y-m');
+        }
+
         $this->loadData();
         if (count($this->collection) == 0) {
             $this->importPeriodicBills();

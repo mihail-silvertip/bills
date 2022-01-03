@@ -1,6 +1,6 @@
 @if(isset($balance))
 <tr>
-    <td class="border px-4 py-2" colspan="{{ count($fields)}}">
+    <td class="border px-4 py-2" colspan="5">
         <div class="flex flex-row">
             <div class="w-1/2">
                 <span class="text-gray-700">Balance:</span>

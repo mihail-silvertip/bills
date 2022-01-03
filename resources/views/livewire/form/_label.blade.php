@@ -1,1 +1,1 @@
-{{$fieldData['value']}}.
+{{$value}}

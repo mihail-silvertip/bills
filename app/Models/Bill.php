@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Http\Traits\RestrictUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 
 class Bill extends Model
 {
-    use HasFactory;
+    use HasFactory, RestrictUser;
 
     protected $fillable = ['user_id', 'due_date', 'category', 'description', 'amount', 'observation', 'payment_method', 'periodic_bill_id', 'confirmed_date', 'paid_date'];
 
@@ -30,6 +31,11 @@ class Bill extends Model
         });
     }
 
+    public function periodicBill()
+    {
+        return $this->belongsTo(PeriodicBill::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -48,6 +54,10 @@ class Bill extends Model
     public function setDueDateAttribute($date)
     {
         $this->attributes['due_date'] = empty($date) ? null : Carbon::parse($date);
+    }
+
+    public function getCategory2Attribute() {
+        return $this->category;
     }
 
 }

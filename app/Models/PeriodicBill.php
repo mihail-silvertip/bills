@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Traits\RestrictUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
@@ -9,6 +10,7 @@ use Carbon\Carbon;
 class PeriodicBill extends Model
 {
     use HasFactory;
+    use RestrictUser;
 
     protected $guarded = [];
     

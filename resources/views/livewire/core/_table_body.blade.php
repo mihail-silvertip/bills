@@ -1,36 +1,5 @@
 <tbody>
     @foreach($collection as $item)
-    <?php
-    if (isset($balance)) {
-        //add subtotal when date changes
-        if(empty($date) || $item->due_date->toDateString() != $date){
-            if (!empty($date)) {
-                $show_balance = true;
-            }
-            
-            $changed_balance = 0;
-            if (!empty($balances[$date])) {
-                $changed_balance = $balance;
-                $balance = $balances[$date];
-            }
-
-            $date = $item->due_date->toDateString();
-            $subtotal = 0;
-    
-        } else {
-            $show_balance = false;
-        }
-        
-        ?>
-    @if(!empty($show_balance))
-        @include('livewire.core._balance_footer')
-    @endif
-    <?php
-        $subtotal += $item->amount;
-        $balance += $item->amount;
-    }
-    ?>
-            
     <tr>
         @foreach($fields as $field => $fieldData)
             @if(isset($fieldData['table_visible']) && $fieldData['table_visible'] == false)
@@ -60,6 +29,4 @@
         </td>
     </tr>
     @endforeach
-
-    @include('livewire.core._balance_footer')
 </tbody>

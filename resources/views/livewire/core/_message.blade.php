@@ -1,5 +1,5 @@
 @if (session()->has('message'))
-    <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md my-3"
+    <div class="bg-red-100 border border-red-400 text-green-700 px-4 py-3 rounded relative"
         role="alert">
         <div class="flex">
             <div>

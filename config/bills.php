@@ -14,7 +14,6 @@ return [
         'mortgage' => 'Mortgage',
         'car' => 'Car',
         'salary' => 'Salary',
-        'other income' => 'Other Income',
         'insurance' => 'Insurance',
         'investment' => 'Investment',
     ]

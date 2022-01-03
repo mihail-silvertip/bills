@@ -18,7 +18,6 @@ class BaseComponent extends Component
 
     public function create()
     {
-        $this->resetCreateForm();
         $this->openModalPopover();
     }
 

@@ -1,35 +1,18 @@
 <tbody>
     @foreach($collection as $item)
     <?php
-    if (isset($balance)) {
-        //add subtotal when date changes
-        if(empty($date) || $item->due_date->toDateString() != $date){
-            if (!empty($date)) {
+        //show balance when date changes
+        if(empty($balance_date) || $item->due_date->toDateString() != $balance_date){
+            if (!empty($balance_date)) {
                 $show_balance = true;
             }
-            
-            $changed_balance = 0;
-            if (!empty($balances[$date])) {
-                $changed_balance = $balance;
-                $balance = $balances[$date];
-            }
-
-            $date = $item->due_date->toDateString();
-            $subtotal = 0;
-    
         } else {
             $show_balance = false;
         }
-        
-        ?>
+    ?>
     @if(!empty($show_balance))
         @include('livewire.core._balance_footer')
     @endif
-    <?php
-        $subtotal += $item->amount;
-        $balance += $item->amount;
-    }
-    ?>
             
     <tr>
         <td class="border px-2 py-2 text-center">{{ (new \Carbon\Carbon($item->due_date))->format('d')}}</td>
@@ -41,6 +24,9 @@
             @include('livewire.core._table_buttons')
         </td>
     </tr>
+    <?php
+    $balance_date = $item->due_date->toDateString();
+    ?>
     @endforeach
 
     @include('livewire.core._balance_footer')

@@ -1,4 +1,5 @@
 <x-modal>
+    <form>
     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div class="">
             <x-form.group type="day" label="Due Day" field="model.due_date"/>
@@ -19,4 +20,5 @@
         @include('livewire.form._button_save')
         @include('livewire.form._button_clear')
     </div>
+    </form>
 </x-modal>

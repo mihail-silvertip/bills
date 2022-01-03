@@ -19,7 +19,7 @@
             </div>
 
             @if($isModalOpen)
-                @include($viewPath . '.create')
+                @include($viewPath . '.' . $modal)
             @endif
 
             <table class="w-full">

@@ -15,8 +15,7 @@ class Bills extends BaseComponent
     public $viewPath = 'livewire.bills';
 
     public Bill $model;
-
-    public $isModalOpen = 0;
+    public Balance $balanceModel;
     
     public $balance = 0;
     public $date = '';
@@ -32,7 +31,6 @@ class Bills extends BaseComponent
         'model.payment_method' => 'required',
         'model.category' => 'string|nullable',
         'model.observation' => 'string|nullable',
-        'base' => 'string|nullable',
     ];
 
     public function render()
@@ -52,14 +50,13 @@ class Bills extends BaseComponent
         $this->model->save();
 
         session()->flash('message', $this->modelId ? 'Record updated.' : 'Record created.');
-
+        $this->emit('balanceChanged');
         $this->closeModalPopover();
     }
 
     public function edit($id)
     {
         $this->model = Bill::mine()->findOrFail($id);
-        $this->model->category2 = $this->model->category;
         $this->modelId = $this->model->id;
         $this->openModalPopover();
     }
@@ -92,12 +89,6 @@ class Bills extends BaseComponent
             $this->importPeriodicBills();
         }
 
-        $this->balances = Balance::mine()
-            ->where('date', 'like', '%' . $this->base . '%')
-            ->orderBy('date')
-            ->get()
-            ->pluck('amount', 'date');
-        
         $this->availableBases = Bill::mine()
             ->selectRaw('DATE_FORMAT(due_date, "%Y-%m") as base')
             ->groupBy('base')
@@ -107,14 +98,13 @@ class Bills extends BaseComponent
     }
 
     public function confirm($id) {
-        $this->model = Bill::mine()->findOrFail($id)->update(['confirmed_date' => \Carbon\Carbon::now()]);
+        Bill::mine()->findOrFail($id)->update(['confirmed_date' => \Carbon\Carbon::now()]);
         session()->flash('message', 'Marked as Confirmed');
     }
 
     public function pay($id) {
-        $this->model = Bill::mine()->findOrFail($id)->update(['paid_date' => \Carbon\Carbon::now()]);
+        Bill::mine()->findOrFail($id)->update(['paid_date' => \Carbon\Carbon::now()]);
         session()->flash('message', 'Marked as Paided');
     }
-
 
 }

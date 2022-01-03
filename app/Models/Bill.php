@@ -56,8 +56,15 @@ class Bill extends Model
         $this->attributes['due_date'] = empty($date) ? null : Carbon::parse($date);
     }
 
-    public function getCategory2Attribute() {
-        return $this->category;
+    public static function getSumAmountGroupByDueDate($base) {
+        return self::mine()
+            ->where('due_date', 'like', $base . '%')
+            ->groupBy('due_date')
+            ->selectRaw('DATE_FORMAT(due_date, "%Y-%m-%d") as date, sum(amount) as total')
+            ->orderBy('due_date')
+            ->get()
+            ->pluck('total', 'date')
+            ->toArray();
     }
 
 }

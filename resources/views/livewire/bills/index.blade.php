@@ -6,8 +6,12 @@
             @include('livewire.core._message')
 
             <div class="flex flex-row justify-between">
-                <div>
-                    // filter
+                <div class="w-48">
+                    @include('livewire.form._select',[
+                        'label'=>__('Select a date'),
+                        'field'=>'base',
+                        'options'=>$availableBases,
+                    ])
                 </div>
                 <div>
                     @include('livewire.form._button_create')

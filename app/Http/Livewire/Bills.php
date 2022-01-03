@@ -32,6 +32,7 @@ class Bills extends BaseComponent
         'model.payment_method' => 'required',
         'model.category' => 'string|nullable',
         'model.observation' => 'string|nullable',
+        'base' => 'string|nullable',
     ];
 
     public function render()
@@ -41,9 +42,7 @@ class Bills extends BaseComponent
         }
 
         $this->loadData();
-        if (count($this->collection) == 0) {
-            $this->importPeriodicBills();
-        }
+
         return view('livewire.bills.index');
     }
 
@@ -88,12 +87,23 @@ class Bills extends BaseComponent
             ->where('due_date', 'like', '%' . $this->base . '%')
             ->orderBy('due_date')
             ->get();
+        
+        if (count($this->collection) == 0) {
+            $this->importPeriodicBills();
+        }
 
         $this->balances = Balance::mine()
             ->where('date', 'like', '%' . $this->base . '%')
             ->orderBy('date')
             ->get()
             ->pluck('amount', 'date');
+        
+        $this->availableBases = Bill::mine()
+            ->selectRaw('DATE_FORMAT(due_date, "%Y-%m") as base')
+            ->groupBy('base')
+            ->orderBy('base')
+            ->get()
+            ->pluck('base');
     }
 
     public function confirm($id) {

@@ -15,7 +15,6 @@ class Bills extends BaseComponent
     public $viewPath = 'livewire.bills';
 
     public Bill $model;
-    public Balance $balanceModel;
     
     public $balance = 0;
     public $date = '';
@@ -33,6 +32,11 @@ class Bills extends BaseComponent
         'model.category' => 'string|nullable',
         'model.observation' => 'string|nullable',
     ];
+
+    public function mount()
+    {
+        $this->model = new Bill;
+    }
 
     public function render()
     {

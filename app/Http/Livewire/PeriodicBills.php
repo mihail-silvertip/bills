@@ -26,6 +26,10 @@ class PeriodicBills extends BaseComponent {
         'model.observation' => 'string|nullable',
     ];
 
+    public function mount() {
+        $this->model = new PeriodicBill;
+    }
+
     public function render()
     {
         $this->collection = PeriodicBill::mine()->orderby('day')->get();

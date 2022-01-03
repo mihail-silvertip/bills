@@ -14,6 +14,13 @@
                     ])
                 </div>
                 <div>
+                    @include('livewire.form._checkbox',[
+                        'label'=>__('Show only not paid bills'),
+                        'field'=>'not_paid',
+                    ])
+                    <label>{{__('Show only not paid bills')}}</label>
+                </div>
+                <div>
                     @include('livewire.form._button_create')
                 </div>
             </div>

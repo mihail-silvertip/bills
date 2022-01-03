@@ -21,8 +21,9 @@ class Bills extends BaseComponent
     public $date = '';
 
     public $base = '';
+    public $not_paid = 1;
 
-    protected $queryString = ['base'];
+    protected $queryString = ['base', 'not_paid'];
 
     public $rules = [
         'model.due_date' => 'required|date',
@@ -81,8 +82,11 @@ class Bills extends BaseComponent
 
     protected function loadData() {
         $this->collection = Bill::mine()
-            ->where('due_date', 'like', '%' . $this->base . '%')
-            ->orderBy('due_date')
+            ->where('due_date', 'like', '%' . $this->base . '%');
+        if ($this->not_paid) {
+            $this->collection = $this->collection->where('paid_date', null);
+        }
+        $this->collection = $this->collection->orderBy('due_date')
             ->get();
         
         if (count($this->collection) == 0) {

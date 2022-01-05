@@ -16,7 +16,7 @@ class PeriodicBills extends BaseComponent {
     public $isModalOpen = 0;
 
     public $rules = [
-        'model.day' => 'required|number',
+        'model.day' => 'required|numeric',
         'model.category' => 'string|nullable',
         'model.description' => 'required',
         'model.amount' => 'required|numeric',

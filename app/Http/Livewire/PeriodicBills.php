@@ -21,7 +21,7 @@ class PeriodicBills extends BaseComponent {
         'model.description' => 'required',
         'model.amount' => 'required|numeric',
         'model.payment_method' => 'required',
-        'model.amount_variable' => 'boolean',
+        'model.amount_variable' => 'boolean|nullable',
         'model.end_date' => 'date|nullable',
         'model.observation' => 'string|nullable',
     ];

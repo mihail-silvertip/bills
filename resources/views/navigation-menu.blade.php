@@ -21,6 +21,12 @@
                     <x-jet-nav-link href="{{ route('periodic-bills') }}" :active="request()->routeIs('periodic-bills')">
                         {{ __('Periodic Bills') }}
                     </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('bank-accounts') }}" :active="request()->routeIs('bank-accounts')">
+                        {{ __('Bank Accounts') }}
+                    </x-jet-nav-link>
+                    <x-jet-nav-link href="{{ route('accounts') }}" :active="request()->routeIs('accounts')">
+                        {{ __('Accounts') }}
+                    </x-jet-nav-link>
                 </div>
             </div>
 
@@ -152,6 +158,12 @@
             </x-jet-responsive-nav-link>
             <x-jet-responsive-nav-link href="{{ route('periodic-bills') }}" :active="request()->routeIs('periodic-bills')">
                 {{ __('Periodic Bills') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('bank-accounts') }}" :active="request()->routeIs('bank-accounts')">
+                {{ __('Bank Accounts') }}
+            </x-jet-responsive-nav-link>
+            <x-jet-responsive-nav-link href="{{ route('accounts') }}" :active="request()->routeIs('accounts')">
+                {{ __('Accounts') }}
             </x-jet-responsive-nav-link>
         </div>
 

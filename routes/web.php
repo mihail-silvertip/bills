@@ -3,6 +3,8 @@
 use App\Http\Livewire\PeriodicBills;
 use App\Http\Livewire\Bills;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\BankAccounts;
+use App\Http\Livewire\Accounts;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,14 +18,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // redirect to bills
+    return redirect()->route('bills');
 });
+
 // route middleware
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::get('/periodic-bills', PeriodicBills::class)->name('periodic-bills');
     Route::get('/bills', Bills::class)->name('bills');
+    Route::get('/accounts', Accounts::class)->name('accounts');
+    Route::get('/bank-accounts', BankAccounts::class)->name('bank-accounts');
 });
-
-// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-//     return view('dashboard');
-// })->name('dashboard');

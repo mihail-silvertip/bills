@@ -48,7 +48,7 @@ class BankAccounts extends BaseComponent {
     
     public function delete($id)
     {
-        $this->model = BankAccount::mine()->find($id)->delete();
+        BankAccount::mine()->find($id)->delete();
         session()->flash('message', 'Record deleted.');
     }
 

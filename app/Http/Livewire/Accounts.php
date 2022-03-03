@@ -52,7 +52,7 @@ class Accounts extends BaseComponent {
     
     public function delete($id)
     {
-        $this->model = Account::mine()->find($id)->delete();
+        Account::mine()->find($id)->delete();
         session()->flash('message', 'Record deleted.');
     }
 

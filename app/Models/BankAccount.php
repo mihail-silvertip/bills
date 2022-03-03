@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Account;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BankAccount extends Model
 {
     use HasFactory;
     use RestrictUser;
+    use SoftDeletes;
 
     protected $guarded = [];
 
@@ -21,7 +23,9 @@ class BankAccount extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            $model->user_id = auth()->id();
+            if (empty($model->user_id)) {
+                $model->user_id = auth()->id();
+            }
         });
     }
 

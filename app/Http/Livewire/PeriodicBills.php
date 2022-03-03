@@ -55,7 +55,7 @@ class PeriodicBills extends BaseComponent {
     
     public function delete($id)
     {
-        $this->model = PeriodicBill::mine()->find($id)->delete();
+        PeriodicBill::mine()->find($id)->delete();
         session()->flash('message', 'Record deleted.');
     }
 

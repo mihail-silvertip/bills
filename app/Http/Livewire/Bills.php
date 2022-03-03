@@ -68,7 +68,7 @@ class Bills extends BaseComponent
     
     public function delete($id)
     {
-        $this->model = Bill::mine()->find($id)->delete();
+        Bill::mine()->find($id)->delete();
         session()->flash('message', 'Record deleted.');
     }
 

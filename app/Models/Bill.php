@@ -11,7 +11,7 @@ class Bill extends Model
 {
     use HasFactory, RestrictUser;
 
-    protected $fillable = ['user_id', 'due_date', 'category', 'description', 'amount', 'observation', 'payment_method', 'periodic_bill_id', 'confirmed_date', 'paid_date'];
+    protected $fillable = ['user_id', 'account_id', 'due_date', 'category', 'description', 'amount', 'observation', 'payment_method', 'periodic_bill_id', 'confirmed_date', 'paid_date'];
 
     protected $casts = [
         'confirmed_date' => 'date:d-m-Y',
@@ -56,9 +56,12 @@ class Bill extends Model
         $this->attributes['due_date'] = empty($date) ? null : Carbon::parse($date);
     }
 
-    public static function getSumAmountGroupByDueDate($base) {
+    public static function getSumAmountGroupByDueDate($base, $account_ids = null) {
         return self::mine()
             ->where('due_date', 'like', $base . '%')
+            ->when($account_ids, function ($query) use ($account_ids) {
+                return $query->whereIn('account_id', $account_ids);
+            })
             ->groupBy('due_date')
             ->selectRaw('DATE_FORMAT(due_date, "%Y-%m-%d") as date, sum(amount) as total')
             ->orderBy('due_date')

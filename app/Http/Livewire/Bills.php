@@ -7,6 +7,7 @@ use App\Http\Livewire\BaseComponent;
 use App\Models\Balance;
 use App\Models\PeriodicBill;
 use Carbon\Carbon;
+use App\Models\Account;
 
 class Bills extends BaseComponent
 {
@@ -16,15 +17,17 @@ class Bills extends BaseComponent
 
     public Bill $model;
     
-    public $balance = 0;
+    public $balances = [];
     public $date = '';
 
     public $base = '';
     public $not_paid = 1;
+    public $filter_account_ids = [];
 
-    protected $queryString = ['base', 'not_paid'];
+    protected $queryString = ['base', 'not_paid', 'filter_account_ids'];
 
     public $rules = [
+        'model.account_id' => 'required|numeric',
         'model.due_date' => 'required|date',
         'model.description' => 'required',
         'model.amount' => 'required|numeric',
@@ -36,6 +39,7 @@ class Bills extends BaseComponent
     public function mount()
     {
         $this->model = new Bill;
+        $this->accounts = Account::mine()->orderby('name')->get()->pluck('name', 'id');
     }
 
     public function render()
@@ -55,7 +59,7 @@ class Bills extends BaseComponent
         $this->model->save();
 
         session()->flash('message', $this->modelId ? 'Record updated.' : 'Record created.');
-        $this->emit('balanceChanged');
+        $this->emit('balanceChanged', $this->filter_account_ids);
         $this->closeModalPopover();
     }
 
@@ -73,6 +77,11 @@ class Bills extends BaseComponent
     }
 
     protected function importPeriodicBills() {
+        $collection = Bill::mine()
+            ->where('due_date', 'like', '%' . $this->base . '%')->get();
+        if ($collection->count() > 0) {
+            return;
+        }
         $endDate = $this->base . '-01';
         $periodicBills = PeriodicBill::mine()->where('end_date', '>', $endDate)->orWhereNull('end_date')->get();
         foreach ($periodicBills as $bill) {
@@ -84,25 +93,36 @@ class Bills extends BaseComponent
         $this->loadData();
     }
 
+    public function filterAccountIdsUpdated() {
+        $this->emit('balanceChanged', $this->filter_account_ids);
+    }
+
     protected function loadData() {
+        $this->importPeriodicBills();
+
         $this->collection = Bill::mine()
-            ->where('due_date', 'like', '%' . $this->base . '%');
+            ->where('due_date', 'like', '%' . $this->base . '%')
+            ->when($this->filter_account_ids, function ($query) {
+                return $query->whereIn('account_id', $this->filter_account_ids);
+            });
         if ($this->not_paid) {
             $this->collection = $this->collection->where('paid_date', null);
         }
         $this->collection = $this->collection->orderBy('due_date')
             ->get();
-        
-        if (count($this->collection) == 0) {
-            $this->importPeriodicBills();
-        }
 
         $this->availableBases = Bill::mine()
             ->selectRaw('DATE_FORMAT(due_date, "%Y-%m") as base')
             ->groupBy('base')
             ->orderBy('base')
             ->get()
-            ->pluck('base');
+            ->pluck('base', 'base');
+        
+        $balance = 0;
+        foreach (Bill::getSumAmountGroupByDueDate($this->base, $this->filter_account_ids) as $date => $amount) {
+            $balance += $amount;
+            $this->balances[$date] = $balance;
+        }
     }
 
     public function confirm($id) {

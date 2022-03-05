@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BankAccount;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\PeriodicBill;
+use App\Models\Bill;
 
 class Account extends Model
 {
@@ -41,6 +43,15 @@ class Account extends Model
     public function getAccountBankNameAttribute()
     {
         return $this->bankAccount->name;
+    }
+
+    public function periodicBills()
+    {
+        return $this->hasMany(PeriodicBill::class);
+    }
+
+    public function bills() {
+        return $this->hasMany(Bill::class);
     }
 
 }

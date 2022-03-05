@@ -1,14 +1,15 @@
 @include('livewire.core._title')
 <?php
 $fields = [
+    //'account_name' => [ 'type' => 'select','label' => ' Account'],
     'day' => [ 'type' => 'text', 'label' => 'Day'],
-    'category' => ['type' => 'select', 'label' => 'Category'],
-    'description' => [ 'type' => 'text','label' => 'Description'],
+    //'category' => ['type' => 'select', 'label' => 'Category'],
+    'description_label' => [ 'type' => 'html','label' => 'Description'],
     'amount' => ['type' => 'currency', 'label' => 'Amount'],
     // 'payment_method' => ['type' => 'select','label' => 'Payment Method'],
     // 'amount_variable' => ['type' => 'checkbox','value' => 1,'label' => 'Amount Variable'],
-    'end_date' => ['type' => 'date','label' => 'End Date'],
-    // 'observation' => ['type' => 'textarea','label' => 'Observation'],
+    //'end_date' => ['type' => 'date','label' => 'End Date', 'class' => 'hidden md:table-cell'],
+    //'observation' => ['type' => 'textarea','label' => 'Observation', 'class' => 'hidden md:table-cell'],
 ];
 ?>
 <div class="py-12">
@@ -17,6 +18,9 @@ $fields = [
             @include('livewire.core._message')
 
             <div class="flex flex-row justify-between">
+                <div>
+                    <x-form.group type="select" label="Account" field="filter_account_id" :options="$accounts"/>
+                </div>
                 <div>
                     @include('livewire.form._button_create')
                 </div>
@@ -27,7 +31,7 @@ $fields = [
             @endif
 
             <table class="w-full">
-                @include('livewire.core._table_header', ['fields' => ['Day', 'Category', 'Description', 'Amount', 'End Date']])
+                @include('livewire.core._table_header', ['fields' => [ 'Day','Description', 'Amount']])
                 @include('livewire.core._table_body')
             </table>
         </div>

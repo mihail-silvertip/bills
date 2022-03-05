@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\PeriodicBill;
 use App\Http\Livewire\BaseComponent;
+use App\Models\Account;
 
 class PeriodicBills extends BaseComponent {
 
@@ -13,9 +14,12 @@ class PeriodicBills extends BaseComponent {
 
     public PeriodicBill $model;
 
+    public $filter_account_id = null;
+
     public $isModalOpen = 0;
 
     public $rules = [
+        'model.account_id' => 'required|numeric',
         'model.day' => 'required|numeric',
         'model.category' => 'string|nullable',
         'model.description' => 'required',
@@ -24,15 +28,21 @@ class PeriodicBills extends BaseComponent {
         'model.amount_variable' => 'boolean|nullable',
         'model.end_date' => 'date|nullable',
         'model.observation' => 'string|nullable',
+        'filter_account_id' => 'numeric|nullable',
     ];
 
     public function mount() {
         $this->model = new PeriodicBill;
+        $this->accounts = Account::mine()->orderby('name')->get()->pluck('name', 'id');
     }
 
     public function render()
     {
-        $this->collection = PeriodicBill::mine()->orderby('day')->get();
+        $this->collection = PeriodicBill::mine()
+        ->when($this->filter_account_id, function ($query) {
+            return $query->where('account_id', $this->filter_account_id);
+        })
+        ->orderby('day')->get();
         return view('livewire.periodic_bills.index');
     }
 

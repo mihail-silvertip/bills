@@ -6,6 +6,7 @@ use App\Http\Traits\RestrictUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Account;
 
 class PeriodicBill extends Model
 {
@@ -44,5 +45,18 @@ class PeriodicBill extends Model
     public function bill()
     {
         return $this->belongsTo(Bill::class);
+    }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    public function getAccountNameAttribute() {
+        return $this->account->name;
+    }
+
+    public function getDescriptionLabelAttribute() {
+        return $this->category . '<Br>' . $this->description;
     }
 }

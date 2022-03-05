@@ -5,20 +5,15 @@
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
             @include('livewire.core._message')
 
-            <div class="flex flex-row justify-between">
-                <div class="w-48">
-                    @include('livewire.form._select',[
-                        'label'=>__('Select a date'),
-                        'field'=>'base',
-                        'options'=>$availableBases,
-                    ])
-                </div>
-                <div>
+            <div class="sm:flex flex-row justify-between">
+                    <x-form.group type="select" label="Month" field="base" :options="$availableBases" class="sm:w-1/3 mx-1"/>
+                    <x-form.group type="select" label="Account" field="filter_account_ids" :options="$accounts" multiple=true class="sm:w-1/3 mx-1"/>
+                <div class="sm:w-1/3 mx-1">
                     @include('livewire.form._checkbox',[
                         'label'=>__('Show only not paid bills'),
                         'field'=>'not_paid',
                     ])
-                    <label>{{__('Show only not paid bills')}}</label>
+                    <label>{{__('Not paid')}}</label>
                 </div>
                 <div>
                     @include('livewire.form._button_create')

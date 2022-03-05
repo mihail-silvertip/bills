@@ -13,6 +13,7 @@ class Balances extends BaseComponent
 
     public $balance_date;
     public $balance;
+    public $balance_account_ids = [];
     public $changed_balance;
 
     public $viewPath = 'livewire.balances';
@@ -33,52 +34,54 @@ class Balances extends BaseComponent
         return view('livewire.balances.amount');
     }
 
-     public function edit($date, $amount) {
-        $this->model = Balance::mine()->where('date', $date)->first() ?? new Balance;
-        $this->model->amount = $amount;
-        $this->model->date = $date;
-        $this->openModalPopover('edit');
-    }
+    // public function edit($date, $amount) {
+    //     $this->model = Balance::mine()->where('date', $date)->first() ?? new Balance;
+    //     $this->model->amount = $amount;
+    //     $this->model->date = $date;
+    //     $this->openModalPopover('edit');
+    // }
 
-    public function save() {
-        $this->model->save();
-        $this->balance = $this->model->amount;
-        session()->flash('message', 'Balance updated.');
-        $this->emit('balanceChanged');
-        $this->closeModalPopover();
-    }
+    // public function save() {
+    //     $this->model->save();
+    //     $this->balance = $this->model->amount;
+    //     session()->flash('message', 'Balance updated.');
+    //     $this->emit('balanceChanged');
+    //     $this->closeModalPopover();
+    // }
 
     protected function loadData() {
-        $this->balances = Balance::mine()
-            ->where('date', 'like', '%' . $this->base . '%')
-            ->where('date', '<=', $this->balance_date)
-            ->orderBy('date')
-            ->get()
-            ->pluck('amount', 'date');
-        if (!empty($this->balances[$this->balance_date])) {
-            $this->balance = $this->balances[$this->balance_date];
-            $this->changed_balance = true;
-            return;
-        }
+        // $this->balances = Balance::mine()
+        //     ->where('date', 'like', '%' . $this->base . '%')
+        //     ->where('date', '<=', $this->balance_date)
+        //     ->orderBy('date')
+        //     ->get()
+        //     ->pluck('amount', 'date');
+        // if (!empty($this->balances[$this->balance_date])) {
+        //     $this->balance = $this->balances[$this->balance_date];
+        //     $this->changed_balance = true;
+        //     return;
+        // }
 
         $this->calculateBalance();
     }
 
     protected function calculateBalance() {
         $this->balance = 0;
-        foreach (Bill::getSumAmountGroupByDueDate($this->base) as $date => $amount) {
+        //dd(Bill::getSumAmountGroupByDueDate($this->base, $this->balance_account_ids));
+        foreach (Bill::getSumAmountGroupByDueDate($this->base, $this->balance_account_ids) as $date => $amount) {
             if ($date > $this->balance_date) {
                 return;
             }
-            if (!empty($this->balances[$date])) {
-                $this->balance = $this->balances[$date];
-            } else {
+            // if (!empty($this->balances[$date])) {
+            //     $this->balance = $this->balances[$date];
+            // } else {
                 $this->balance += $amount;
-            }
+            // }
         }
     }
 
-    public function balanceChanged() {
+    public function balanceChanged($balance_account_ids = []) {
+        $this->balance_account_ids = $balance_account_ids;
         $this->render();
     }
 }

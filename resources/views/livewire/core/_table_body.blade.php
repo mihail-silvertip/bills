@@ -17,6 +17,9 @@
             @elseif(!empty($fieldData['type']) && $fieldData['type'] == 'view')
             <td class="border px-2 py-2 text-center @if(isset($fieldData['class'])){{$fieldData['class']}}@endif">@include($fieldData['view'])</td>
 
+            @elseif(!empty($fieldData['type']) && $fieldData['type'] == 'html')
+            <td class="border px-2 py-2 text-center @if(isset($fieldData['class'])){{$fieldData['class']}}@endif">{!! $item->$field !!}</td>
+
             @else
                 <td class="border px-4 py-2 @if(isset($fieldData['class'])){{$fieldData['class']}}@endif">{{$item->$field}}</td>
             @endif

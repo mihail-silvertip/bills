@@ -6,6 +6,7 @@ return [
         'credit card' => 'credit card',
         'bill' => 'bill',
         'e-transfer' => 'e-transfer',
+        'withdrawal' => 'withdrawal',
     ],
     'categories' => [
         'home' => 'Home',
@@ -16,5 +17,6 @@ return [
         'salary' => 'Salary',
         'insurance' => 'Insurance',
         'investment' => 'Investment',
+        'Balance Transfer' => 'Balance Transfer',
     ]
 ];

@@ -18,6 +18,7 @@ class BaseComponent extends Component
 
     public function create()
     {
+        $this->model = new $this->model;
         $this->openModalPopover();
     }
 

@@ -17,6 +17,7 @@ return [
         'salary' => 'Salary',
         'insurance' => 'Insurance',
         'investment' => 'Investment',
-        'Balance Transfer' => 'Balance Transfer',
+        'balance Transfer' => 'Balance Transfer',
+        'food' => 'Food',
     ]
 ];
